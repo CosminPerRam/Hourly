@@ -1,12 +1,7 @@
 class MessagesController < ApplicationController
   before_action :set_message, only: %i[ show edit update destroy ]
-  before_action :authenticate_user!, except: %i[ index, show ]
+  before_action :authenticate_user!, except: %i[ show ]
   before_action :correct_user, only: %i[ edit update destroy ]
-
-  # GET /messages or /messages.json
-  def index
-    @messages = Message.all
-  end
 
   # GET /messages/1 or /messages/1.json
   def show
