@@ -1,0 +1,14 @@
+
+<div id="messages">
+  <% @messages.each do |message| %>
+    <p>
+      <strong>Message: </strong>
+      <%= message.message %>
+      <strong> At: </strong>
+      <%= message.created_at %>
+    </p>
+    <p>
+      <%= link_to "Show this message", message %> |
+    </p>
+  <% end %>
+</div>
