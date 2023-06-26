@@ -7,7 +7,7 @@
       <strong>Message: </strong>
       <%= message.message %>
       <strong> By: </strong>
-      <%= current_user.email %>
+      <%= message.user.email %>
       <strong> At: </strong>
       <%= message.created_at %>
     </p>
