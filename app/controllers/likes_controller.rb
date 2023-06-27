@@ -4,26 +4,27 @@ class LikesController < ApplicationController
   def create
     @message_id = params[:message_id]
     @user_id = current_user.id
-    @like = Like.new(user_id: @user_id, message_id: @message_id)
 
-    respond_to do |format|
-      if @like.save
-        format.html { redirect_to root_path, notice: "Like was successfully created." }
-        format.json { render :show, status: :created, location: @like }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @like.errors, status: :unprocessable_entity }
+    @previous_like = current_user.likes.find_by(user_id: @user_id, message_id: @message_id)
+    if @previous_like.nil?
+      @like = Like.new(user_id: @user_id, message_id: @message_id)
+
+      respond_to do |format|
+        if @like.save
+          format.html { redirect_to root_path, notice: "Like was successfully created." }
+          format.json { render :show, status: :created, location: @like }
+        else
+          format.html { render :new, status: :unprocessable_entity }
+          format.json { render json: @like.errors, status: :unprocessable_entity }
+        end
       end
-    end
-  end
+    else
+      @previous_like.destroy
 
-  # DELETE /likes/1 or /likes/1.json
-  def destroy
-    @like.destroy
-
-    respond_to do |format|
-      format.html { redirect_to likes_url, notice: "Like was successfully destroyed." }
-      format.json { head :no_content }
+      respond_to do |format|
+        format.html { redirect_to root_path, notice: "Like was successfully destroyed." }
+        format.json { head :no_content }
+      end
     end
   end
 
