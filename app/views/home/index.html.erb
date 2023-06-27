@@ -14,14 +14,14 @@
     <p>
       <%= link_to "Show this message", message %> |
       <% unless current_user.nil? %>
-        <%= button_to "Like this message", likes_path(:message_id => message.id), method: :post, remote: true %> |
+        <%= button_to message.likes.any? { |like| like.user_id == current_user.id} ? "Unlike this message" : "Like this message", likes_path(:message_id => message.id), method: :post, remote: true %> |
         <% if message.user == current_user %>
           <%=  link_to "Edit this message", edit_message_path(message)  %>
         <% end %>
       <% end %>
     </p>
-  <% end %>
-  <% @likes.each do |like| %>
-    <p><%= like.inspect %></p>
+    <% message.likes.each do |like| %>
+      <p><%= like.inspect %></p>
+    <% end %>
   <% end %>
 </div>
